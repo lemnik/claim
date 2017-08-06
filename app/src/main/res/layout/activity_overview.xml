@@ -5,17 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.lemnik.claim.OverviewActivity">
+    tools:context="com.lemnik.claim.OverviewActivity"
+    android:padding="@dimen/grid_spacer1"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <fragment
-        android:id="@+id/allowance_overview"
-        android:name="com.lemnik.claim.ui.AllowanceOverviewFragment"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/allowance_overview"
+            android:name="com.lemnik.claim.ui.AllowanceOverviewFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
 
     <Button
-        android:text="Update Spending"
-        android:onClick="onUpdateSpending"
+        android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:onClick="onUpdateSpending"
+        android:text="Update Spending" />
 </LinearLayout>

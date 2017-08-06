@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.lemnik.claim.R;
 import com.lemnik.claim.databinding.FragmentAllowanceOverviewBinding;
 import com.lemnik.claim.model.Allowance;
-import com.lemnik.claim.ui.presenters.AllowancePresenter;
+import com.lemnik.claim.ui.presenters.AllowanceOverviewPresenter;
 
 public class AllowanceOverviewFragment extends Fragment {
 
@@ -31,7 +31,7 @@ public class AllowanceOverviewFragment extends Fragment {
                 false);
 
         if (this.allowance != null) {
-            this.binding.setPresenter(new AllowancePresenter(allowance));
+            this.binding.setPresenter(new AllowanceOverviewPresenter(allowance));
         }
 
         return this.binding.getRoot();
@@ -53,7 +53,7 @@ public class AllowanceOverviewFragment extends Fragment {
                 this.binding.getPresenter().detach();
             }
 
-            this.binding.setPresenter(new AllowancePresenter(allowance));
+            this.binding.setPresenter(new AllowanceOverviewPresenter(allowance));
         }
     }
 

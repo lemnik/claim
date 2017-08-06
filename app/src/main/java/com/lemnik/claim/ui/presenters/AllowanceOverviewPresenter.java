@@ -11,9 +11,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class AllowancePresenter {
+public class AllowanceOverviewPresenter {
 
-    public final ObservableField<SpendStats> spendStats = new ObservableField<>();
+    public final ObservableField<SpendingStats> spendingStats = new ObservableField<>();
 
     public final Allowance allowance;
 
@@ -29,7 +29,7 @@ public class AllowancePresenter {
         }
     };
 
-    public AllowancePresenter(final Allowance allowance) {
+    public AllowanceOverviewPresenter(final Allowance allowance) {
         this.allowance = allowance;
         this.allowance.addOnPropertyChangedCallback(allowanceObserver);
     }
@@ -41,20 +41,19 @@ public class AllowancePresenter {
     public void updateAllowance(final CharSequence newAllowance) {
         try {
             allowance.setAmountPerDay(Integer.parseInt(newAllowance.toString()));
-        } catch (final NumberFormatException | NullPointerException ex) {
+        } catch (final RuntimeException ex) {
             //ignore
+            allowance.setAmountPerDay(0);
         }
     }
 
-    public static class SpendStats {
+    public static class SpendingStats {
 
         public final int total;
-
         public final int today;
-
         public final int thisWeek;
 
-        public SpendStats(
+        SpendingStats(
                 final int total,
                 final int today,
                 final int thisWeek) {
@@ -65,7 +64,7 @@ public class AllowancePresenter {
         }
     }
 
-    private class UpdateSpendStatsCommand extends ActionCommand<Allowance, SpendStats> {
+    private class UpdateSpendStatsCommand extends ActionCommand<Allowance, SpendingStats> {
 
         Pair<Date, Date> getThisWeek() {
             final GregorianCalendar today = new GregorianCalendar();
@@ -101,12 +100,12 @@ public class AllowancePresenter {
         }
 
         @Override
-        public SpendStats onBackground(final Allowance allowance) throws Exception {
+        public SpendingStats onBackground(final Allowance allowance) throws Exception {
             final Pair<Date, Date> today = getToday();
             final Pair<Date, Date> thisWeek = getThisWeek();
 
             // for stats we round everything to integers
-            return new SpendStats(
+            return new SpendingStats(
                     (int) allowance.getTotalSpent(),
                     (int) allowance.getAmountSpent(today.first, today.second),
                     (int) allowance.getAmountSpent(thisWeek.first, thisWeek.second)
@@ -114,8 +113,8 @@ public class AllowancePresenter {
         }
 
         @Override
-        public void onForeground(final SpendStats newStats) {
-            spendStats.set(newStats);
+        public void onForeground(final SpendingStats newStats) {
+            spendingStats.set(newStats);
         }
     }
 

@@ -17,8 +17,6 @@ public class AllowanceOverviewPresenter {
 
     public final Allowance allowance;
 
-    private final UpdateSpendStatsCommand updateSpendStatsCommand = new UpdateSpendStatsCommand();
-
     private final Observable.OnPropertyChangedCallback allowanceObserver = new Observable.OnPropertyChangedCallback() {
 
         @Override
@@ -28,6 +26,8 @@ public class AllowanceOverviewPresenter {
             updateSpendStatsCommand.exec(allowance);
         }
     };
+
+    private final UpdateSpendingStatsCommand updateSpendStatsCommand = new UpdateSpendingStatsCommand();
 
     public AllowanceOverviewPresenter(final Allowance allowance) {
         this.allowance = allowance;
@@ -64,7 +64,7 @@ public class AllowanceOverviewPresenter {
         }
     }
 
-    private class UpdateSpendStatsCommand extends ActionCommand<Allowance, SpendingStats> {
+    private class UpdateSpendingStatsCommand extends ActionCommand<Allowance, SpendingStats> {
 
         Pair<Date, Date> getThisWeek() {
             final GregorianCalendar today = new GregorianCalendar();

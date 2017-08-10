@@ -30,12 +30,4 @@ public class OverviewActivity extends AppCompatActivity {
         allowanceOverview.setAllowance(allowance);
     }
 
-    public void onUpdateSpending(final View v) {
-        final ClaimItem item = new ClaimItem();
-        item.setAmount(21);
-        item.setDescription("Test");
-        item.setTimestamp(new Date());
-        item.setCategory(Category.OTHER);
-        allowance.addClaimItem(item);
-    }
 }

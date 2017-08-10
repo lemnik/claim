@@ -3,4 +3,5 @@
     <dimen name="grid_spacer1">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="input_size_amount">100sp</dimen>
+    <dimen name="allowance_overview_label_min_width">50dp</dimen>
 </resources>

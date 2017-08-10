@@ -15,7 +15,6 @@ import com.lemnik.claim.ui.presenters.AllowanceOverviewPresenter;
 public class AllowanceOverviewFragment extends Fragment {
 
     private Allowance allowance;
-
     private FragmentAllowanceOverviewBinding binding;
 
     @Override

@@ -19,12 +19,14 @@ public class Attachment implements Parcelable {
         }
     };
 
+    long id;
+
     File file;
 
     Type type;
 
 
-    public Attachment(final File file, final Type type) {
+    public Attachment(final long id, final File file, final Type type) {
         this.file = file;
         this.type = Type.safe(type);
     }
@@ -32,6 +34,14 @@ public class Attachment implements Parcelable {
     protected Attachment(final Parcel in) {
         file = new File(in.readString());
         type = Type.values()[in.readInt()];
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public File getFile() {

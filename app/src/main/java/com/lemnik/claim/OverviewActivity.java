@@ -1,17 +1,10 @@
 package com.lemnik.claim;
 
-import android.os.Parcel;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 
 import com.lemnik.claim.model.Allowance;
-import com.lemnik.claim.model.Category;
-import com.lemnik.claim.model.ClaimItem;
 import com.lemnik.claim.ui.AllowanceOverviewFragment;
-
-import java.util.Date;
 
 public class OverviewActivity extends AppCompatActivity {
 

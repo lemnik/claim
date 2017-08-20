@@ -1,23 +1,19 @@
 package com.lemnik.claim;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import com.lemnik.claim.model.Category;
 import com.lemnik.claim.model.ClaimItem;
 import com.lemnik.claim.ui.CategoryPickerFragment;
 import com.lemnik.claim.ui.attachments.AttachmentPagerFragment;
 import com.lemnik.claim.ui.attachments.CaptureClaimDetailsFragment;
-import com.lemnik.claim.widget.DatePickerLayout;
 
 import java.util.Date;
 
@@ -38,10 +34,10 @@ public class CaptureClaimActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_claim);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton attach = (FloatingActionButton) findViewById(R.id.attach);
+        FloatingActionButton attach = findViewById(R.id.attach);
         attach.setOnClickListener(this);
 
         final FragmentManager fragmentManager = getSupportFragmentManager();

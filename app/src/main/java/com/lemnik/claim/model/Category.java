@@ -1,5 +1,6 @@
 package com.lemnik.claim.model;
 
+import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.IdRes;
 
 import com.lemnik.claim.R;
@@ -34,4 +35,5 @@ public enum Category {
 
         throw new IllegalArgumentException("No category for ID: " + id);
     }
+
 }

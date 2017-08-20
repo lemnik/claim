@@ -1,14 +1,17 @@
 package com.lemnik.claim.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 public class ClaimItem implements Parcelable {
 
     public static final Creator<ClaimItem> CREATOR = new Creator<ClaimItem>() {
@@ -23,15 +26,21 @@ public class ClaimItem implements Parcelable {
         }
     };
 
-    String description;
-    double amount;
-    Date timestamp;
-    Category category;
+    @PrimaryKey(autoGenerate = true)
+    public long id;
+
+    public String description;
+    public double amount;
+    public Date timestamp;
+    public Category category;
+
+    @Ignore
     List<Attachment> attachments = new ArrayList<>();
 
     public ClaimItem() {
     }
 
+    @Ignore
     ClaimItem(
             final String description,
             final double amount,
@@ -91,6 +100,7 @@ public class ClaimItem implements Parcelable {
     }
 
     protected ClaimItem(final Parcel in) {
+        id = in.readLong();
         description = in.readString();
         amount = in.readDouble();
 
@@ -110,6 +120,7 @@ public class ClaimItem implements Parcelable {
 
     @Override
     public void writeToParcel(final Parcel dest, final int flags) {
+        dest.writeLong(id);
         dest.writeString(description);
         dest.writeDouble(amount);
         dest.writeLong(timestamp != null ? timestamp.getTime() : -1);

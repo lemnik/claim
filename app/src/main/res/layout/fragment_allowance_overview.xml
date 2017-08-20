@@ -4,7 +4,6 @@
     tools:context="com.lemnik.claim.ui.AllowanceOverviewFragment">
 
     <data>
-
         <variable
             name="presenter"
             type="com.lemnik.claim.ui.presenters.AllowanceOverviewPresenter" />

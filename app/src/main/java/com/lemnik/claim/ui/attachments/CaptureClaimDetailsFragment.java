@@ -37,6 +37,8 @@ public class CaptureClaimDetailsFragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_claim_capture_details, container, false);
 
         description = (EditText) root.findViewById(R.id.description);
+        amount = (EditText) root.findViewById(R.id.amount);
+        selectedDate = (DatePickerLayout) root.findViewById(R.id.date);
 
         return root;
     }

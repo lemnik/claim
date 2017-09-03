@@ -18,7 +18,7 @@ public interface ClaimItemDao {
     LiveData<List<ClaimItem>> selectAll();
 
     @Insert
-    void insert(ClaimItem item);
+    long insert(ClaimItem item);
 
     @Update
     void update(ClaimItem item);

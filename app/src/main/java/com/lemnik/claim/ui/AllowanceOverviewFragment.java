@@ -1,21 +1,32 @@
 package com.lemnik.claim.ui;
 
+import android.arch.lifecycle.LifecycleFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lemnik.claim.R;
 import com.lemnik.claim.databinding.FragmentAllowanceOverviewBinding;
-import com.lemnik.claim.model.Allowance;
 import com.lemnik.claim.ui.presenters.AllowanceOverviewPresenter;
 
-public class AllowanceOverviewFragment extends Fragment {
+public class AllowanceOverviewFragment extends LifecycleFragment {
 
-    private Allowance allowance;
     private FragmentAllowanceOverviewBinding binding;
+    private SharedPreferences preferences;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.preferences = getContext().getSharedPreferences(
+                "Allowance",
+                Context.MODE_PRIVATE
+        );
+    }
 
     @Override
     public View onCreateView(
@@ -27,33 +38,23 @@ public class AllowanceOverviewFragment extends Fragment {
                 inflater,
                 R.layout.fragment_allowance_overview,
                 container,
-                false);
+                false
+        );
 
-        if (this.allowance != null) {
-            this.binding.setPresenter(new AllowanceOverviewPresenter(allowance));
-        }
+        this.binding.setPresenter(new AllowanceOverviewPresenter(
+                this,
+                preferences.getInt("allowancePerDay", 150)
+        ));
 
         return this.binding.getRoot();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (this.binding != null && this.binding.getPresenter() != null) {
-            this.binding.getPresenter().detach();
-        }
+    public void onDestroy() {
+        super.onDestroy();
+
+        preferences.edit()
+                .putInt("allowancePerDay", this.binding.getPresenter().allowance.get())
+                .apply();
     }
-
-    public void setAllowance(final Allowance allowance) {
-        this.allowance = allowance;
-
-        if (this.binding != null) {
-            if (this.binding.getPresenter() != null) {
-                this.binding.getPresenter().detach();
-            }
-
-            this.binding.setPresenter(new AllowanceOverviewPresenter(allowance));
-        }
-    }
-
 }

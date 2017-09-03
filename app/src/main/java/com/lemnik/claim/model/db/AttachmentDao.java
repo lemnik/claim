@@ -17,7 +17,7 @@ public interface AttachmentDao {
     LiveData<List<Attachment>> selectForClaimItemId(final long claimItemId);
 
     @Insert
-    void insert(Attachment attachment);
+    long insert(Attachment attachment);
 
     @Update
     void update(Attachment attachment);

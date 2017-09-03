@@ -17,10 +17,10 @@
         <activity
             android:name=".CaptureClaimActivity"
             android:label="@string/title_activity_capture_claim"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
-        <activity android:name=".OverviewActivity">
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OverviewActivity"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

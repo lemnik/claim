@@ -5,6 +5,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,4 +129,10 @@ public class ClaimItem implements Parcelable {
         dest.writeTypedList(attachments);
     }
 
+    public boolean isValid() {
+        return !TextUtils.isEmpty(description)
+                && amount > 0
+                && timestamp != null
+                && category != null;
+    }
 }

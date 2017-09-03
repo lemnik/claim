@@ -26,6 +26,27 @@ public abstract class ClaimDatabase extends RoomDatabase {
 
     public abstract AttachmentDao attachmentDao();
 
+    public Runnable createClaimItemTask(final ClaimItem claimItem) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                beginTransaction();
+                try {
+                    final long claimId = claimItemDao().insert(claimItem);
+                    claimItem.id = claimId;
+
+                    for (final Attachment attachment : claimItem.getAttachments()) {
+                        attachment.claimItemId = claimId;
+                        attachment.id = attachmentDao().insert(attachment);
+                    }
+                    setTransactionSuccessful();
+                } finally {
+                    endTransaction();
+                }
+            }
+        };
+    }
+
     @TypeConverter
     public static Long fromDate(final Date date) {
         return date == null ? null : date.getTime();

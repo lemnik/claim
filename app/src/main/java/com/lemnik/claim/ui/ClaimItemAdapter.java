@@ -19,9 +19,9 @@ import java.util.List;
 
 public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<ItemPresenter, ClaimItem>> {
 
-    final LayoutInflater layoutInflater;
-    final ItemPresenter itemPresenter;
-    List<ClaimItem> items = Collections.emptyList();
+    private final LayoutInflater layoutInflater;
+    private final ItemPresenter itemPresenter;
+    private List<ClaimItem> items = Collections.emptyList();
 
     public ClaimItemAdapter(
             final Context context,

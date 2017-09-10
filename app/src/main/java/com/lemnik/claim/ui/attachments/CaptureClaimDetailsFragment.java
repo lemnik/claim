@@ -25,6 +25,13 @@ public class CaptureClaimDetailsFragment extends Fragment {
 
     public void setClaimItem(final ClaimItem claimItem) {
         this.claimItem = claimItem;
+
+        // not in the book
+        if (description != null && amount != null && selectedDate != null) {
+            description.setText(claimItem.getDescription());
+            amount.setText(Integer.toString((int) claimItem.getAmount()));
+            selectedDate.setDate(claimItem.getTimestamp());
+        }
     }
 
     @Nullable
@@ -39,6 +46,13 @@ public class CaptureClaimDetailsFragment extends Fragment {
         description = (EditText) root.findViewById(R.id.description);
         amount = (EditText) root.findViewById(R.id.amount);
         selectedDate = (DatePickerLayout) root.findViewById(R.id.date);
+
+        // not in the book
+        if (claimItem != null) {
+            description.setText(claimItem.getDescription());
+            amount.setText(Integer.toString((int) claimItem.getAmount()));
+            selectedDate.setDate(claimItem.getTimestamp());
+        }
 
         return root;
     }

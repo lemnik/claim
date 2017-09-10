@@ -1,14 +1,19 @@
 package com.lemnik.claim.ui.presenters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
 import com.lemnik.claim.R;
+import com.lemnik.claim.ViewClaimActivity;
 import com.lemnik.claim.model.Category;
+import com.lemnik.claim.model.ClaimItem;
 
 import java.text.DateFormat;
 import java.util.Date;
+
+import static com.lemnik.claim.CaptureClaimActivity.EXTRA_CLAIM_ITEM;
 
 /**
  * Created by jason on 2017/08/01.
@@ -56,6 +61,12 @@ public class ItemPresenter {
         }
 
         return dateFormat.format(date);
+    }
+
+    public void viewClaimItem(final ClaimItem item) {
+        final Intent viewClaimIntent = new Intent(context, ViewClaimActivity.class);
+        viewClaimIntent.putExtra(EXTRA_CLAIM_ITEM, item);
+        context.startActivity(viewClaimIntent);
     }
 
 }

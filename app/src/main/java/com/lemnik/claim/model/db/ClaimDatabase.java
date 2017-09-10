@@ -64,7 +64,7 @@ public abstract class ClaimDatabase extends RoomDatabase {
 
     @TypeConverter
     public static File toFile(final String path) {
-        return path == null ? new File(path) : null;
+        return path == null ? null : new File(path);
     }
 
     @TypeConverter

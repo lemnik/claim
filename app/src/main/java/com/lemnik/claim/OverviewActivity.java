@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
 
 import com.lemnik.claim.model.ClaimItem;
 import com.lemnik.claim.model.db.ClaimDatabase;

@@ -52,7 +52,10 @@ public class DatePickerWrapper implements View.OnFocusChangeListener, View.OnCli
     }
 
     public void setDate(final Date date) {
-        if (date == null) throw new IllegalArgumentException("date may not be null");
+        if (date == null) {
+            throw new IllegalArgumentException("date may not be null");
+        }
+
         this.currentDate = (Date) date.clone();
         this.display.setText(dateFormat.format(currentDate));
 

@@ -9,6 +9,8 @@ public class DataBoundViewHolder<P, I> extends RecyclerView.ViewHolder {
 
     private final ViewDataBinding binding;
 
+    private I item;
+
     public DataBoundViewHolder(final ViewDataBinding binding, final P presenter) {
         super(binding.getRoot());
         this.binding = binding;
@@ -16,7 +18,12 @@ public class DataBoundViewHolder<P, I> extends RecyclerView.ViewHolder {
     }
 
     public void setItem(final I item) {
+        this.item = item;
         binding.setVariable(BR.item, item);
+    }
+
+    public I getItem() {
+        return item;
     }
 
     public void setPresenter(final P presenter) {

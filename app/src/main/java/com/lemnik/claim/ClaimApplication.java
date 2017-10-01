@@ -13,9 +13,9 @@ public class ClaimApplication extends Application {
     public void onCreate() {
         super.onCreate();
         DATABASE = Room.databaseBuilder(
-            /* Context */this,
-            /* Abstract Database Class */ ClaimDatabase.class,
-            /* Filename */ "Claims"
+        /* Context */this,
+        /* Abstract Database Class */ ClaimDatabase.class,
+        /* Filename */ "Claims"
         ).build();
     }
 

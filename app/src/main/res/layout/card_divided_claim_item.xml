@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="presenter"
+            type="com.lemnik.claim.ui.presenters.ItemPresenter" />
+
+        <variable
+            name="item"
+            type="com.lemnik.claim.model.ClaimItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_spacer1"
+            android:layout_marginBottom="@dimen/grid_spacer1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+        <include
+            item="@{item}"
+            layout="@layout/card_claim_item"
+            presenter="@{presenter}" />
+    </LinearLayout>
+</layout>

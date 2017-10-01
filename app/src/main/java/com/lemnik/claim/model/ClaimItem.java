@@ -135,4 +135,35 @@ public class ClaimItem implements Parcelable {
                 && timestamp != null
                 && category != null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClaimItem claimItem = (ClaimItem) o;
+
+        if (id != claimItem.id) return false;
+        if (Double.compare(claimItem.amount, amount) != 0) return false;
+        if (description != null ? !description.equals(claimItem.description) : claimItem.description != null)
+            return false;
+        if (timestamp != null ? !timestamp.equals(claimItem.timestamp) : claimItem.timestamp != null)
+            return false;
+        if (category != claimItem.category) return false;
+        return attachments != null ? attachments.equals(claimItem.attachments) : claimItem.attachments == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        temp = Double.doubleToLongBits(amount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (attachments != null ? attachments.hashCode() : 0);
+        return result;
+    }
 }

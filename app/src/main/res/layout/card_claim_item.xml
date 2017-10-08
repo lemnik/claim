@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="presenter"
             type="com.lemnik.claim.ui.presenters.ItemPresenter" />
@@ -13,12 +14,13 @@
             type="com.lemnik.claim.model.ClaimItem" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <com.lemnik.claim.widget.ColorizedCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/grid_spacer1"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> presenter.viewClaimItem(item)}">
+        android:onClick="@{() -> presenter.viewClaimItem(item)}"
+        app:colorizeDrawable="@{presenter.getCategoryIcon(item.category)}">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,8 +28,8 @@
 
             <ImageView
                 android:id="@+id/category_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -79,6 +81,6 @@
                 tools:text="16-December-2017" />
 
         </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+    </com.lemnik.claim.widget.ColorizedCardView>
 
 </layout>

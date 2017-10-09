@@ -8,7 +8,7 @@ import android.widget.TextView;
  * Created by jason on 2017/07/08.
  */
 
-public abstract class IconPickerWrapper implements RadioGroup.OnCheckedChangeListener {
+public class IconPickerWrapper implements RadioGroup.OnCheckedChangeListener {
 
     private final TextSwitcher label;
 

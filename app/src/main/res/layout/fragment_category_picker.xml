@@ -72,9 +72,21 @@
 
     </RadioGroup>
 
-    <TextView
+    <TextSwitcher
         android:id="@+id/selected_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:inAnimation="@anim/slide_in_top"
+        android:outAnimation="@anim/slide_out_bottom">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </TextSwitcher>
 </LinearLayout>

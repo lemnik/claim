@@ -7,28 +7,21 @@ import android.widget.TextView;
 /**
  * Created by jason on 2017/07/08.
  */
+
 public abstract class IconPickerWrapper implements RadioGroup.OnCheckedChangeListener {
 
-    public abstract void setLabelText(final CharSequence text);
+    private final TextSwitcher label;
+
+    public IconPickerWrapper(final TextSwitcher label) {
+        this.label = label;
+    }
+
+    public void setLabelText(final CharSequence text) {
+        label.setText(text);
+    }
 
     @Override
     public void onCheckedChanged(final RadioGroup group, final int checkedId) {
         setLabelText(group.findViewById(checkedId).getContentDescription());
-    }
-
-    public static IconPickerWrapper create(final TextView label) {
-        return new IconPickerWrapper() {
-            public void setLabelText(final CharSequence text) {
-                label.setText(text);
-            }
-        };
-    }
-
-    public static IconPickerWrapper create(final TextSwitcher label) {
-        return new IconPickerWrapper() {
-            public void setLabelText(final CharSequence text) {
-                label.setText(text);
-            }
-        };
     }
 }

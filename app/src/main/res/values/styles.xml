@@ -19,4 +19,10 @@
 
     <item name="visible" type="id" />
     <item name="masked" type="id" />
+
+    <style name="AmountInput">
+        <item name="android:gravity">right</item>
+        <item name="android:selectAllOnFocus">true</item>
+    </style>
+
 </resources>

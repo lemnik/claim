@@ -29,7 +29,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewClaimActivity" />
-        <activity android:name=".CardWithMenuActivity" android:label="ViewStub Menu">
+        <activity
+            android:name=".CardWithMenuActivity"
+            android:label="ViewStub Menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

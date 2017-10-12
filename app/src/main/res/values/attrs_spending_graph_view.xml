@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="SpendingGraphView">
+        <attr name="positiveColor" format="color" />
+        <attr name="negativeColor" format="color" />
+        <attr name="targetColor" format="color" />
+    </declare-styleable>
+</resources>

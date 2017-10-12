@@ -20,5 +20,6 @@
 
     <string name="msg_claim_item_deleted">%s Deleted</string>
     <string name="undo">Undo</string>
+    <string name="title_activity_foobar">FoobarActivity</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.VectorDrawable;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
@@ -63,8 +64,56 @@ public class SpendingGraphView extends View {
         a.recycle();
     }
 
-    protected void invalidateGraph() {
+    protected static double getMaximum(final double[] numbers) {
+        double max = 0;
 
+        for (final double n : numbers) {
+            max = Math.max(max, n);
+        }
+
+        return max;
+    }
+
+    protected void invalidateGraph() {
+        if (spendingPerDay == null) {
+            spendingPath = null;
+            spendingPaint = null;
+            targetLine = null;
+            targetPaint = null;
+            postInvalidate();
+
+            return;
+        }
+
+        final int paddingLeft = getPaddingLeft();
+        final int paddingTop = getPaddingTop();
+        final int paddingRight = getPaddingRight();
+        final int paddingBottom = getPaddingBottom();
+
+        final int contentWidth = getWidth() - paddingLeft - paddingRight;
+        final int contentHeight = getHeight() - paddingTop - paddingBottom;
+
+        final double maximumSpend = getMaximum(spendingPerDay);
+
+        double stepSize = (double) contentWidth / (double) spendingPerDay.length;
+        double scale = (double) contentHeight / maximumSpend;
+
+        spendingPath = new Path();
+        spendingPath.moveTo(paddingLeft, paddingTop);
+
+        spendingPaint = new Paint();
+        spendingPaint.setStrokeWidth(2.0f);
+        spendingPaint.setColor(positiveColor); // TODO!
+
+        float x = paddingLeft;
+
+        for (int i = 0; i < spendingPerDay.length; i++) {
+            spendingPath.lineTo(x, (float) (scale * spendingPerDay[i]));
+            x += stepSize;
+        }
+
+        targetPaint = new Paint();
+        targetLine = new float[0];
     }
 
     @Override
@@ -111,45 +160,6 @@ public class SpendingGraphView extends View {
     public void setTargetColor(int targetColor) {
         this.targetColor = targetColor;
         invalidateGraph();
-    }
-
-    private class GenerateGraph extends ActionCommand<double[], Pair<Path, Paint>> {
-
-        final int paddingLeft = getPaddingLeft();
-        final int paddingTop = getPaddingTop();
-        final int paddingRight = getPaddingRight();
-        final int paddingBottom = getPaddingBottom();
-
-        final int contentWidth = getWidth() - paddingLeft - paddingRight;
-        final int contentHeight = getHeight() - paddingTop - paddingBottom;
-
-        Path createSpendingPath(final double[] amountPerDay) {
-            final Path path = new Path();
-
-            //TODO
-
-            return path;
-        }
-
-        Paint createSpendingPaint() {
-            final Paint paint = new Paint();
-
-            //TODO
-
-            return paint;
-        }
-
-        @Override
-        public Pair<Path, Paint> onBackground(final double[] amountPerDay) throws Exception {
-            return null;
-        }
-
-        @Override
-        public void onForeground(final Pair<Path, Paint> graph) {
-            spendingPath = graph.first;
-            spendingPaint = graph.second;
-            postInvalidate();
-        }
     }
 
 }

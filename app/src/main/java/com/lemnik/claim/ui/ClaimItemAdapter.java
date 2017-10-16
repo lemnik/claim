@@ -18,10 +18,11 @@ import com.lemnik.claim.ui.presenters.ItemPresenter;
 import com.lemnik.claim.util.ActionCommand;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<ItemPresenter, ClaimItem>> {
 
@@ -101,12 +102,34 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                     || c1.get(Calendar.YEAR) != c2.get(Calendar.YEAR);
         }
 
+        double[] getSpendingPerDay(final List<ClaimItem> claimItems) {
+            final double[] lastTenDays = new double[10];
+            Arrays.fill(lastTenDays, 0);
+
+            final long today = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
+
+            for (final ClaimItem item : claimItems) {
+                final long timestamp = TimeUnit.MILLISECONDS.toDays(item.getTimestamp().getTime());
+                final int distance = (int) (today - timestamp);
+
+                if (distance > 10) {
+                    break;
+                }
+
+                lastTenDays[9 - distance] += item.getAmount();
+            }
+
+            return lastTenDays;
+        }
+
         @Override
         public List<DisplayItem> onBackground(
                 final List<ClaimItem> claimItems)
                 throws Exception {
 
             final List<DisplayItem> output = new ArrayList<>();
+
+            output.add(new DisplayItem(R.layout.card_spending_graph, getSpendingPerDay(claimItems)));
 
             for (int i = 0; i < claimItems.size(); i++) {
                 final ClaimItem item = claimItems.get(i);

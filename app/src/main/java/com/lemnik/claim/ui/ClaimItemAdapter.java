@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -102,17 +103,33 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                     || c1.get(Calendar.YEAR) != c2.get(Calendar.YEAR);
         }
 
+        int countDays(final Date timestamp) {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(timestamp);
+
+            final Calendar counterCalendar = Calendar.getInstance();
+            counterCalendar.clear(Calendar.HOUR_OF_DAY);
+            counterCalendar.clear(Calendar.MINUTE);
+            counterCalendar.clear(Calendar.SECOND);
+            counterCalendar.clear(Calendar.MILLISECOND);
+
+            int days = 0;
+            while (calendar.before(counterCalendar)) {
+                days++;
+                counterCalendar.add(Calendar.DAY_OF_YEAR, -1);
+            }
+
+            return days;
+        }
+
         double[] getSpendingPerDay(final List<ClaimItem> claimItems) {
             final double[] lastTenDays = new double[10];
             Arrays.fill(lastTenDays, 0);
 
-            final long today = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
-
             for (final ClaimItem item : claimItems) {
-                final long timestamp = TimeUnit.MILLISECONDS.toDays(item.getTimestamp().getTime());
-                final int distance = (int) (today - timestamp);
+                final int distance = countDays(item.timestamp);
 
-                if (distance > 10) {
+                if (distance > 9) {
                     break;
                 }
 
@@ -128,7 +145,6 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                 throws Exception {
 
             final List<DisplayItem> output = new ArrayList<>();
-
             output.add(new DisplayItem(R.layout.card_spending_graph, getSpendingPerDay(claimItems)));
 
             for (int i = 0; i < claimItems.size(); i++) {
@@ -191,8 +207,9 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                         case R.layout.card_claim_item:
                             final ClaimItem oldClaimItem = (ClaimItem) oldItem.value;
                             final ClaimItem newClaimItem = (ClaimItem) newItem.value;
-                            return oldClaimItem.id == newClaimItem.id;
+                            return oldClaimItem != null && newClaimItem != null && oldClaimItem.id == newClaimItem.id;
                         case R.layout.widget_divider:
+                        case R.layout.card_spending_graph:
                             return true;
                     }
 
@@ -208,9 +225,11 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                         case R.layout.card_claim_item:
                             final ClaimItem oldClaimItem = (ClaimItem) oldItem.value;
                             final ClaimItem newClaimItem = (ClaimItem) newItem.value;
-                            return oldClaimItem.equals(newClaimItem);
+                            return oldClaimItem != null && newClaimItem != null && oldClaimItem.equals(newClaimItem);
                         case R.layout.widget_divider:
                             return true;
+                        case R.layout.card_spending_graph:
+                            return false;
                     }
 
                     return false;

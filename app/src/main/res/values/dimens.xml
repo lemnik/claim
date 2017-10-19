@@ -6,4 +6,5 @@
     <dimen name="allowance_overview_label_min_width">50dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="spending_graph_height">220dp</dimen>
 </resources>

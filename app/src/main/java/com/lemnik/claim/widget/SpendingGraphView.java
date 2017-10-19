@@ -4,41 +4,39 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.drawable.VectorDrawable;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.View;
 
 import com.lemnik.claim.R;
-import com.lemnik.claim.util.ActionCommand;
 
 public class SpendingGraphView extends View {
 
-    private int positiveColor = Color.GREEN;
-    private int negativeColor = Color.RED;
-    private int targetColor = Color.GRAY;
+    private int strokeColor = Color.GREEN;
+    private int strokeWidth = 2;
 
     private double[] spendingPerDay;
 
-    private Path spendingPath = null;
-    private Paint spendingPaint = null;
-    private float[] targetLine = null;
-    private Paint targetPaint = null;
+    private Path path = null;
+    private Paint paint = null;
 
     public SpendingGraphView(final Context context) {
         super(context);
         init(null, 0);
     }
 
-    public SpendingGraphView(final Context context, final AttributeSet attrs) {
+    public SpendingGraphView(
+            final Context context,
+            final AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public SpendingGraphView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public SpendingGraphView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -47,19 +45,14 @@ public class SpendingGraphView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.SpendingGraphView, defStyle, 0);
 
-        positiveColor = a.getColor(
-                R.styleable.SpendingGraphView_positiveColor,
-                positiveColor);
+        strokeColor = a.getColor(
+                R.styleable.SpendingGraphView_strokeColor,
+                strokeColor);
 
-        negativeColor = a.getColor(
-                R.styleable.SpendingGraphView_negativeColor,
-                negativeColor);
-
-        targetColor = a.getColor(
-                R.styleable.SpendingGraphView_targetColor,
-                targetColor);
-
-        invalidateGraph();
+        strokeWidth = a.getDimensionPixelSize(
+                R.styleable.SpendingGraphView_strokeWidth,
+                strokeWidth
+        );
 
         a.recycle();
     }
@@ -75,12 +68,10 @@ public class SpendingGraphView extends View {
     }
 
     protected void invalidateGraph() {
-        if (spendingPerDay == null) {
-            spendingPath = null;
-            spendingPaint = null;
-            targetLine = null;
-            targetPaint = null;
-            postInvalidate();
+        if (spendingPerDay == null || spendingPerDay.length <= 1) {
+            path = null;
+            paint = null;
+            invalidate();
 
             return;
         }
@@ -90,44 +81,45 @@ public class SpendingGraphView extends View {
         final int paddingRight = getPaddingRight();
         final int paddingBottom = getPaddingBottom();
 
-        final int contentWidth = getWidth() - paddingLeft - paddingRight;
-        final int contentHeight = getHeight() - paddingTop - paddingBottom;
+        final int contentWidth =
+                getWidth() - paddingLeft - paddingRight;
+        final int contentHeight =
+                getHeight() - paddingTop - paddingBottom;
+        final int graphHeight =
+                contentHeight - strokeWidth * 2;
 
-        final double maximumSpend = getMaximum(spendingPerDay);
+        final double graphMaximum = getMaximum(spendingPerDay);
 
-        double stepSize = (double) contentWidth / (double) spendingPerDay.length;
-        double scale = (double) contentHeight / maximumSpend;
+        final double stepSize = (double) contentWidth / (double) (spendingPerDay.length - 1);
+        final double scale = (double) graphHeight / graphMaximum;
 
-        spendingPath = new Path();
-        spendingPath.moveTo(paddingLeft, paddingTop);
+        path = new Path();
+        path.moveTo(paddingLeft, paddingTop);
 
-        spendingPaint = new Paint();
-        spendingPaint.setStrokeWidth(2.0f);
-        spendingPaint.setColor(positiveColor); // TODO!
+        paint = new Paint();
+        paint.setStrokeWidth(strokeWidth);
+        paint.setColor(strokeColor);
+        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        paint.setStyle(Paint.Style.STROKE);
 
-        float x = paddingLeft;
+        path.moveTo(paddingLeft, contentHeight - (float) (scale * spendingPerDay[0]));
 
-        for (int i = 0; i < spendingPerDay.length; i++) {
-            spendingPath.lineTo(x, (float) (scale * spendingPerDay[i]));
-            x += stepSize;
+        for (int i = 1; i < spendingPerDay.length; i++) {
+            path.lineTo(
+                    (float) (i * stepSize) + paddingLeft,
+                    contentHeight - (float) (scale * spendingPerDay[i]));
         }
 
-        targetPaint = new Paint();
-        targetLine = new float[0];
+        invalidate();
     }
 
     @Override
     protected void onDraw(final Canvas canvas) {
-        super.onDraw(canvas);
-
-        if (spendingPath == null || spendingPaint == null
-                || targetLine == null || targetPaint == null) {
-
+        if (path == null || paint == null) {
             return;
         }
 
-        canvas.drawPath(spendingPath, spendingPaint);
-        canvas.drawLines(targetLine, targetPaint);
+        canvas.drawPath(path, paint);
     }
 
     public void setSpendingPerDay(final double[] spendingPerDay) {
@@ -135,30 +127,21 @@ public class SpendingGraphView extends View {
         invalidateGraph();
     }
 
-    public int getPositiveColor() {
-        return positiveColor;
+    public int getStrokeColor() {
+        return strokeColor;
     }
 
-    public void setPositiveColor(int positiveColor) {
-        this.positiveColor = positiveColor;
+    public void setStrokeColor(final int strokeColor) {
+        this.strokeColor = strokeColor;
         invalidateGraph();
     }
 
-    public int getNegativeColor() {
-        return negativeColor;
+    public int getStrokeWidth() {
+        return strokeWidth;
     }
 
-    public void setNegativeColor(int negativeColor) {
-        this.negativeColor = negativeColor;
-        invalidateGraph();
-    }
-
-    public int getTargetColor() {
-        return targetColor;
-    }
-
-    public void setTargetColor(int targetColor) {
-        this.targetColor = targetColor;
+    public void setStrokeWidth(final int strokeWidth) {
+        this.strokeWidth = strokeWidth;
         invalidateGraph();
     }
 

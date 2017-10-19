@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.icu.util.DateInterval;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -123,20 +124,21 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
         }
 
         double[] getSpendingPerDay(final List<ClaimItem> claimItems) {
-            final double[] lastTenDays = new double[10];
-            Arrays.fill(lastTenDays, 0);
+            final double[] daysSpending = new double[10];
+            final int lastItem = daysSpending.length - 1;
+            Arrays.fill(daysSpending, 0);
 
             for (final ClaimItem item : claimItems) {
                 final int distance = countDays(item.timestamp);
 
-                if (distance > 9) {
+                if (distance > lastItem) {
                     break;
                 }
 
-                lastTenDays[9 - distance] += item.getAmount();
+                daysSpending[lastItem - distance] += item.getAmount();
             }
 
-            return lastTenDays;
+            return daysSpending;
         }
 
         @Override
@@ -145,7 +147,9 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                 throws Exception {
 
             final List<DisplayItem> output = new ArrayList<>();
-            output.add(new DisplayItem(R.layout.card_spending_graph, getSpendingPerDay(claimItems)));
+            output.add(new DisplayItem(
+                    R.layout.card_spending_graph,
+                    getSpendingPerDay(claimItems)));
 
             for (int i = 0; i < claimItems.size(); i++) {
                 final ClaimItem item = claimItems.get(i);
@@ -207,7 +211,9 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                         case R.layout.card_claim_item:
                             final ClaimItem oldClaimItem = (ClaimItem) oldItem.value;
                             final ClaimItem newClaimItem = (ClaimItem) newItem.value;
-                            return oldClaimItem != null && newClaimItem != null && oldClaimItem.id == newClaimItem.id;
+                            return oldClaimItem != null
+                                    && newClaimItem != null
+                                    && oldClaimItem.id == newClaimItem.id;
                         case R.layout.widget_divider:
                         case R.layout.card_spending_graph:
                             return true;
@@ -225,7 +231,9 @@ public class ClaimItemAdapter extends RecyclerView.Adapter<DataBoundViewHolder<I
                         case R.layout.card_claim_item:
                             final ClaimItem oldClaimItem = (ClaimItem) oldItem.value;
                             final ClaimItem newClaimItem = (ClaimItem) newItem.value;
-                            return oldClaimItem != null && newClaimItem != null && oldClaimItem.equals(newClaimItem);
+                            return oldClaimItem != null
+                                    && newClaimItem != null
+                                    && oldClaimItem.equals(newClaimItem);
                         case R.layout.widget_divider:
                             return true;
                         case R.layout.card_spending_graph:

@@ -135,5 +135,17 @@ public class OverviewActivity
             final DataBoundViewHolder<?, ClaimItem> holder = (DataBoundViewHolder<?, ClaimItem>) viewHolder;
             new DeleteClaimItemCommand(holder.getItem()).exec(null);
         }
+
+        @Override
+        public int getMovementFlags(
+                final RecyclerView recyclerView,
+                final RecyclerView.ViewHolder viewHolder) {
+
+            if (viewHolder.getAdapterPosition() == 0) {
+                return 0;
+            }
+
+            return super.getMovementFlags(recyclerView, viewHolder);
+        }
     }
 }
